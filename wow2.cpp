@@ -9,6 +9,7 @@
 #include <cstdio>
 #include <iomanip>
 #include <memory.h>
+#include <fstream>
 #include <sstream>
 using namespace std;
 
@@ -179,6 +180,8 @@ int main(int argv, char** argcs)
 {
 	//int REDS[] = {0, 1, 2, 3, 4};
 	//int BLUES[] = {1, 4, 3, 0, 2};
+	ofstream out("out.txt");
+	streambuf * oldbuf = cout.rdbuf(out.rdbuf());
 
 	int n, M;
 	cin >> n;
