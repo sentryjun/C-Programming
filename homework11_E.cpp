@@ -6,6 +6,50 @@ template <class T>
 class CArray3D
 {
 // 在此处补充你的代码
+public:
+	class CArray
+	{
+	private:
+		int row;
+		int col;
+		int size;
+		T * ptr;
+	public:
+		CArray(int _row, int _col):row(_row), col(_col)
+		{
+			size = _row * _col;
+			ptr = new T[size];
+		}
+		CArray(){ptr = NULL;}
+		void init(int _row, int _col)
+		{
+			row = _row;
+			col = _col;
+			size = _row * _col;
+			ptr = new T[size];
+		}
+		T * operator[](int i)
+		{
+			return this->ptr + i * col;
+		}
+		operator T*()
+		{
+			return ptr;
+		}
+	};
+	CArray * a;
+	int size;
+	CArray3D (int len, int _row, int _col):size(len)
+	{
+		a = new CArray[len];
+		for (int i = 0; i < len; i++){
+			a[i].init(_row, _col);
+		}
+	}
+	CArray& operator[](int n)
+	{
+		return *(a+n);
+	}
 };
 
 CArray3D<int> a(3,4,5);
