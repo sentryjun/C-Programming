@@ -5,39 +5,41 @@
 #include <algorithm>
 using namespace std;
 // 在此处补充你的代码
-template<class Key, class Value, class Pre = greater<Key> >
+template< class Key, class Value, class Pre = greater<Key> >
 struct MyMultimap {
-    typedef pair<Key, Value> Pair;
-    typedef multimap<Key, Value> Map;
-    Map mp;
-    void insert(Pair p) {
-        mp.insert(p);
+    multimap<Key, Value, Pre> mymap;
+    typedef typename multimap<Key, Value, Pre>::iterator iterator;
+    void insert(pair<Key, Value> p) {
+        mymap.insert(p);
     }
-    multimap<Key, Value>::iterator begin() {
-        return mp.begin();
+    iterator begin() {
+        return mymap.begin();
     }
-    multimap<Key,Value>::iterator end() {
-        return mp.end();
+    iterator end() {
+        return mymap.end();
     }
-    void Set(Key key, Value value) {
-        auto it = mp.begin();
-        for (; it != mp.end(); it++) {
+    void Set(Key key, Value newValue) {
+        iterator it = mymap.begin();
+        for (; it != mymap.end(); it++) {
             if (it->first == key) {
-                it->second = value;
+                it->second = newValue;
             }
         }
     }
-    multimap<Key, Value>::iterator find(const Key & key) {
-        return mp.find(key);
-    }
     void clear() {
-        mp.clear();
+        mymap.clear();
+    }
+    iterator find(Key key) {
+        return mymap.find(key);
     }
 };
+
 template <class _T1, class _T2>
 ostream& operator<<(ostream & out, const pair<_T1, _T2> p) {
-    out << "(" << p.first << "," << p.second << ")"; 
-}
+    out << "(" << p.first << "," << p.second << ")";
+    return out; 
+};
+
 struct Student
 {
     string name;
