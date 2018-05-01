@@ -40,8 +40,8 @@ void get_prime() {
     }
 }
 
-int get_Prime_num(int n) {
-    int ans = 0, total = n;
+int get_Prime_num(int in) {
+    /*int ans = 0, total = n;
     for (int i = 0; i < VAR; i++) {
         if (PRIME[i] >= n) break;
         if (total % PRIME[i] == 0) {
@@ -50,12 +50,27 @@ int get_Prime_num(int n) {
                 total /= PRIME[i];
             }
         }
+    }*/
+    int n = in;
+    int ans = 0;
+    int flag = 0;
+    for (int i = 2; i <= sqrt(n); i++) {
+        if (n % i == 0) {
+            ans++;
+            flag = i;
+            while (n % i == 0) {
+                n /= i;
+            }
+        }
+    }
+    if (n > 1 && n != in) {
+        ans++;
     }
     return ans;
 }
 
 struct MyLess {
-    bool operator()(K &t1, K &t2) {
+    bool operator()(const K &t1, const K &t2) {
         int a = t1.first, b = t2.first;
         if (a < b) return 1;
         else if (a == b) { return t1.second < t2.second; }
@@ -79,27 +94,33 @@ int main(int argv, char **argcs) {
     vector<K> temp;
     priority_queue<int, vector<pair<int, int> >, MyLess> big_queue;
     priority_queue<int, vector<pair<int, int> >, MyGreater> little_queue;
+    set<pair<int, int>, MyLess> queue;
     for (int i = 0; i < num; i++) {
-        for (int m = 0; m < temp.size(); m++) {
+        /*for (int m = 0; m < temp.size(); m++) {
             big_queue.push(temp[m]);
             little_queue.push(temp[m]);
         }
-        temp.clear();
+        temp.clear();*/
         for (int t = 0; t < 10; t++) {
             int tm;
             cin >> tm;
-            big_queue.push(make_pair(get_Prime_num(tm), tm));
-            little_queue.push(make_pair(get_Prime_num(tm), tm));
+            /*big_queue.push(make_pair(get_Prime_num(tm), tm));
+            little_queue.push(make_pair(get_Prime_num(tm), tm));*/
+            queue.insert(make_pair(get_Prime_num(tm), tm));
         }
-        cout << big_queue.top().second << " " << little_queue.top().second << endl;
+        cout << queue.rbegin()->second << " " << queue.begin()->second << endl;
+        queue.erase(*queue.rbegin());
+        queue.erase(*queue.begin());
+        /*cout << big_queue.top().second << " " << little_queue.top().second << endl;
         big_queue.pop();
         little_queue.pop();
-        for (int j = 0; j < 9; j++) {
+        for (int j = 0; j < big_queue.size(); j++) {
             temp.push_back(big_queue.top());
             big_queue.pop();
             little_queue.pop();
         }
-        temp.pop_back();
+        //cout << temp.back().second << endl;
+        temp.pop_back();*/
     }
     return 0;
 }
